@@ -5,7 +5,11 @@ import cors from 'cors'
 const app = express();
 
 app.use(express.json());
-app.use(cors())
+
+app.use(cors({
+  origin: 'https://carmarketplace.onrender.com', // frontend URL
+  credentials: true, // if you send cookies or auth headers
+}));
 
 app.get("/", (_, response) =>
   response.json({ info: "Express app with Supabase" })
