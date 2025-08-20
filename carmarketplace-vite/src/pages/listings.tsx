@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CarCard from '../components/CarCard';
 import type { ListingResponse } from '../models/ListingResponse';

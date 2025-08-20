@@ -1,9 +1,7 @@
-import { ChevronFirst, ChevronLast, MoreVertical, Check } from "lucide-react"
+import { ChevronFirst, ChevronLast } from "lucide-react"
 import { createContext, useContext, useState, useEffect} from "react"
-import type { ReactNode } from "react"
 import { useSearchParams } from "react-router-dom"
 
-// --- Sidebar Context Type ---
 interface SidebarContextType {
   expanded: boolean
 }
