@@ -20,7 +20,7 @@ function classNames(...classes: (string | undefined | null | false)[]): string {
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user, loading: _loading } = useAuth();
 
   const handleClick = async () => {
     if (user) {
