@@ -25,7 +25,7 @@ function Listings() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get<ListingResponse>('http://localhost:3001/api/listing/all',
+        const response = await axios.get<ListingResponse>('https://carmarketplace-api.onrender.com/api/listing/all',
           {
             params: {
                   page,

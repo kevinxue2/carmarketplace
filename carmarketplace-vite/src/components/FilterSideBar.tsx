@@ -55,12 +55,12 @@ export default function FilterSideBar() {
             label='Make'
             paramKey='make'
             reset='model'
-            fetchUrl='http://localhost:3001/api/filter/makes'
+            fetchUrl='https://carmarketplace-api.onrender.com/api/filter/makes'
             />
             <FilterItem
             label='Model'
             paramKey='model'
-            fetchUrl='http://localhost:3001/api/filter/models'
+            fetchUrl='https://carmarketplace-api.onrender.com/api/filter/models'
             />
             <FilterRange
             label='Year'
