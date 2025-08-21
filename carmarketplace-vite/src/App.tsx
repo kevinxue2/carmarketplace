@@ -8,6 +8,8 @@ import Navbar from './components/Navbar';
 import Listings from './pages/listings';
 import SignUp from './pages/signup';
 import SignIn from './pages/signin';
+import About from './pages/about'
+import Home from './pages/home'
 
 function App() {
 
@@ -16,10 +18,10 @@ function App() {
       <Navbar/>
       <div className="pt-16">
         <Routes>
-        <Route path="/" element={<Listings />} />
+        <Route path="/" element={<Home />} />
         <Route path="/cars" element={<Listings />} />
-        {/* <Route path="/about" element={<About />} />
-        <Route path="/profile/saved" element={<Saved />} />
+        <Route path="/about" element={<About />} />
+        {/* <Route path="/profile/saved" element={<Saved />} />
         <Route path="/profile/monitoring" element={<Monitoring />} />
         <Route path="/profile/history" element={<History />} /> */}
         <Route path="/profile/signin" element={<SignIn />} />

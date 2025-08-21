@@ -6,8 +6,12 @@ const app = express();
 
 app.use(express.json());
 
+const allowedOrigin = process.env.NODE_ENV === 'production' 
+  ? 'https://carmarketplace.onrender.com' 
+  : 'http://localhost:5173';
+
 app.use(cors({
-  origin: 'https://carmarketplace.onrender.com', // frontend URL
+  origin: allowedOrigin, // frontend URL
   credentials: true, // if you send cookies or auth headers
 }));
 

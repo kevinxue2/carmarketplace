@@ -2,6 +2,8 @@ import { ChevronFirst, ChevronLast } from "lucide-react"
 import { createContext, useContext, useState, useEffect} from "react"
 import { useSearchParams } from "react-router-dom"
 
+const baseUrl = import.meta.env.VITE_API_URL;
+
 interface SidebarContextType {
   expanded: boolean
 }
@@ -55,12 +57,12 @@ export default function FilterSideBar() {
             label='Make'
             paramKey='make'
             reset='model'
-            fetchUrl='https://carmarketplace-api.onrender.com/api/filter/makes'
+            fetchUrl={`${baseUrl}/api/filter/makes`}
             />
             <FilterItem
             label='Model'
             paramKey='model'
-            fetchUrl='https://carmarketplace-api.onrender.com/api/filter/models'
+            fetchUrl={`${baseUrl}/api/filter/models`}
             />
             <FilterRange
             label='Year'

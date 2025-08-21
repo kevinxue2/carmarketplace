@@ -7,6 +7,8 @@ import PageNavigator from '../components/PageNavigator';
 import FilterSideBar from '../components/FilterSideBar';
 import { useSearchParams } from 'react-router-dom';
 
+const baseUrl = import.meta.env.VITE_API_URL;
+
 function Listings() {
   const [data, setData] = useState<ListingResponse>();
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +27,7 @@ function Listings() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get<ListingResponse>('https://carmarketplace-api.onrender.com/api/listing/all',
+        const response = await axios.get<ListingResponse>(`${baseUrl}/api/listing/all`,
           {
             params: {
                   page,
