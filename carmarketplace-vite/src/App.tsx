@@ -16,7 +16,7 @@ function App() {
       <Navbar/>
       <div className="pt-16">
         <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Listings />} />
         <Route path="/cars" element={<Listings />} />
         {/* <Route path="/about" element={<About />} />
         <Route path="/profile/saved" element={<Saved />} />
