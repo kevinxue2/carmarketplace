@@ -6,13 +6,20 @@ const app = express();
 
 app.use(express.json());
 
-const allowedOrigin = process.env.NODE_ENV === 'production' 
-  ? 'https://carmarketplace-d54d.vercel.app'
-  : 'http://localhost:5173';
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://carmarketplace-d54d.vercel.app'
+];
 
 app.use(cors({
-  origin: allowedOrigin, // frontend URL
-  credentials: true, // if you send cookies or auth headers
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error('CORS not allowed for ' + origin));
+    }
+  },
+  credentials: true
 }));
 
 app.get("/", (_, response) =>
