@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigin = process.env.NODE_ENV === 'production' 
-  ? 'https://carmarketplace.onrender.com' 
+  ? process.env.PROD_URL
   : 'http://localhost:5173';
 
 app.use(cors({
