@@ -26,11 +26,11 @@ app.get("/", (_, response) =>
   response.json({ info: "Express app with Supabase" })
 );
 
-app.listen(3001, () =>
-  console.log(
-    new Date().toLocaleTimeString() + `: Server is running on port ${3001}...`
-  )
-);
+// app.listen(3001, () =>
+//   console.log(
+//     new Date().toLocaleTimeString() + `: Server is running on port ${3001}...`
+//   )
+// );
 
 import {authRoutes} from './routes/auth.routes.js';
 // const userRoutes = require('./routes/user.routes');
@@ -43,3 +43,5 @@ app.use('/api/auth', authRoutes);
 // app.use('/api/admin', adminRoutes);
 app.use('/api/listing', listingRoutes);
 app.use('/api/filter', filterRoutes);
+
+export default app;
