@@ -29,13 +29,37 @@ router.get('/all', async (req, res) => {
         const from = (page - 1) * pageSize;
         const to = from + pageSize - 1; // Supabase uses inclusive range
 
-        const { make, model, year, price, kilometers } = req.query;
+        const { make, model, year, price, kilometers, sort} = req.query;
+
+                const getSortConfig = (sortParam) => {
+            switch (sortParam) {
+                case 'price_asc':
+                    return { column: 'price', ascending: true };
+                case 'price_desc':
+                    return { column: 'price', ascending: false };
+                case 'year_asc':
+                    return { column: 'year', ascending: true };
+                case 'year_desc':
+                    return { column: 'year', ascending: false };
+                case 'kilometers_asc':
+                    return { column: 'kilometers', ascending: true };
+                case 'kilometers_desc':
+                    return { column: 'kilometers', ascending: false };
+                case 'created_at_asc':
+                    return { column: 'created_at', ascending: true };
+                case 'created_at_desc':
+                default:
+                    return { column: 'created_at', ascending: false };
+            }
+        };
+        
+        const sortConfig = getSortConfig(sort);
 
         // Fetch paginated data
         var query =  supabase
             .from('cars')
             .select('*', { count: 'exact' }) // get total count
-            .order('created_at', { ascending: false })
+            .order(sortConfig.column, { ascending: sortConfig.ascending });
 
         if (make) {
             query = query.eq('brand', make);

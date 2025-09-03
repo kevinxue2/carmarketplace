@@ -23,6 +23,7 @@ function Listings() {
   const year = searchParams.get('year') || undefined;
   const price = searchParams.get('price') || undefined;
   const kilometers = searchParams.get('kilometers') || undefined;
+  const sort = searchParams.get('sort') || undefined;
 
   useEffect(() => {
     async function fetchData() {
@@ -37,6 +38,7 @@ function Listings() {
                   ...(year ? { year } : {}),
                   ...(price ? { price } : {}),
                   ...(kilometers ? { kilometers } : {}),
+                  ...(sort ? { sort } : {})
             }
           }
         );
@@ -53,7 +55,7 @@ function Listings() {
     }
 
     fetchData();
-  }, [page, pageSize, make, model, year, price, kilometers]);
+  }, [page, pageSize, make, model, year, price, kilometers, sort]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
