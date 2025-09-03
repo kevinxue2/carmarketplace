@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigin = process.env.NODE_ENV === 'production' 
-  ? process.env.PROD_URL
+  ? 'https://carmarketplace-d54d.vercel.app'
   : 'http://localhost:5173';
 
 app.use(cors({
