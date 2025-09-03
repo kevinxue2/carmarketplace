@@ -1,33 +1,18 @@
 import express from "express";
 
-// import cors from 'cors'
+import cors from 'cors'
 
 const app = express();
 
 app.use(express.json());
 
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://carmarketplace-d54d.vercel.app');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.status(204).end();
-});
-
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://carmarketplace-d54d.vercel.app'
-];
+const allowedOrigin = process.env.NODE_ENV === 'production' 
+  ? process.env.PROD_URL
+  : 'http://localhost:5173';
 
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      cb(null, true);
-    } else {
-      cb(new Error('CORS not allowed for ' + origin));
-    }
-  },
-  credentials: true
+  origin: allowedOrigin, // frontend URL
+  credentials: true, // if you send cookies or auth headers
 }));
 
 app.get("/", (_, response) =>
@@ -51,5 +36,3 @@ app.use('/api/auth', authRoutes);
 // app.use('/api/admin', adminRoutes);
 app.use('/api/listing', listingRoutes);
 app.use('/api/filter', filterRoutes);
-
-// export default app;
