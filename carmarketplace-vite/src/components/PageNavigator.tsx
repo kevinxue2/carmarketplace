@@ -8,21 +8,44 @@ type PageNavigatorProps = {
   totalPages: number
 }
 
-type SortOption = {
-  value: string
-  label: string
-}
-
-const sortOptions: SortOption[] = [
-  { value: 'created_at_desc', label: 'Newest First' },
-  { value: 'created_at_asc', label: 'Oldest First' },
-  { value: 'price_asc', label: 'Price: Low to High' },
-  { value: 'price_desc', label: 'Price: High to Low' },
-  { value: 'year_desc', label: 'Year: Newest First' },
-  { value: 'year_asc', label: 'Year: Oldest First' },
-  { value: 'kilometers_asc', label: 'Mileage: Low to High' },
-  { value: 'kilometers_desc', label: 'Mileage: High to Low' }
-];
+const getPageNumbers = (currentPage: number, totalPages: number): string[] => {
+  const pages: string[] = [];
+  
+  if (totalPages <= 7) {
+    // Show all pages if 7 or fewer
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i.toString());
+    }
+  } else {
+    // Always show first page
+    pages.push('1');
+    
+    if (currentPage <= 4) {
+      // Show pages 1, 2, 3, 4, 5, ..., last
+      for (let i = 2; i <= 5; i++) {
+        pages.push(i.toString());
+      }
+      pages.push('...');
+      pages.push(totalPages.toString());
+    } else if (currentPage >= totalPages - 3) {
+      // Show pages 1, ..., last-4, last-3, last-2, last-1, last
+      pages.push('...');
+      for (let i = totalPages - 4; i <= totalPages; i++) {
+        pages.push(i.toString());
+      }
+    } else {
+      // Show pages 1, ..., current-1, current, current+1, ..., last
+      pages.push('...');
+      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+        pages.push(i.toString());
+      }
+      pages.push('...');
+      pages.push(totalPages.toString());
+    }
+  }
+  
+  return pages;
+};
 
 export default function PageNavigator({
   page,
@@ -36,89 +59,71 @@ export default function PageNavigator({
 
   const currentSort = searchParams.get('sort') || 'created_at_desc';
 
-    const goToNextPage = () => {
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.set('page', String(Math.min(page + 1, totalPages)));
-        navigate(`/cars?${newParams.toString()}`);
-    };
+  const goToNextPage = () => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('page', String(Math.min(page + 1, totalPages)));
+      navigate(`/cars?${newParams.toString()}`);
+  };
 
-    const goToPrevPage = () => {
-        if (page <= 1) return;
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.set('page', String(Math.max(page - 1, 1)));
-        navigate(`/cars?${newParams.toString()}`);
-    };
+  const goToPrevPage = () => {
+      if (page <= 1) return;
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set('page', String(Math.max(page - 1, 1)));
+      navigate(`/cars?${newParams.toString()}`);
+  };
 
-    const handleSortChange = (sortValue: string) => {
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.set('sort', sortValue)
-        navigate(`/cars?${newParams.toString()}`);
-    };
+  const updatePage = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', String(newPage));
+    navigate(`?${params.toString()}`);
+  };
+  
   return (
-    <div className="flex items-center justify-between gap-4 p-2 border rounded-xl shadow-sm text-sm">
+    <div className="flex items-center justify-center gap-1">
+      {/* Previous Button */}
       <button
-        className="px-3 py-1 rounded-lg border text-gray-200 hover:bg-gray-100 disabled:opacity-50"
+        className="px-3 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         disabled={page <= 1}
-        onClick={() => goToPrevPage()}
+        onClick={goToPrevPage}
       >
-        Prev
+        ←
       </button>
 
-      <div className="text-gray-200">
-        Page <span className="font-medium">{page}</span> of{" "}
-        <span className="font-medium">{totalPages}</span> •{" "}
-        Showing <span className="font-medium">{pageSize}</span> per page •{" "}
-        Total: <span className="font-medium">{total}</span>
-      </div>
-
-             <div className="relative">
+      {/* Page Numbers */}
+      {getPageNumbers(page, totalPages).map((pageNum, index) => {
+        if (pageNum === '...') {
+          return (
+            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-400">
+              ...
+            </span>
+          );
+        }
+        
+        const pageNumber = parseInt(pageNum);
+        const isCurrentPage = pageNumber === page;
+        
+        return (
           <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            key={pageNumber}
+            onClick={() => updatePage(pageNumber)}
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+              isCurrentPage
+                ? 'bg-blue-600 text-white shadow-sm'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+            }`}
           >
-            <span>Sort by</span>
-            <svg 
-              className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+            {pageNumber}
           </button>
+        );
+      })}
 
-          {isDropdownOpen && (
-            <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-              <div className="py-1">
-                {sortOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleSortChange(option.value)}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors ${
-                      currentSort === option.value 
-                        ? 'bg-blue-50 text-blue-700 font-medium' 
-                        : 'text-gray-700'
-                    }`}
-                  >
-                    {option.label}
-                    {currentSort === option.value && (
-                      <span className="float-right">✓</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-      
-
+      {/* Next Button */}
       <button
-        className="px-3 py-1 rounded-lg border text-gray-200 hover:bg-gray-100 disabled:opacity-50"
+        className="px-3 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         disabled={page >= totalPages}
-        onClick={() => goToNextPage()}
+        onClick={goToNextPage}
       >
-        Next
+        →
       </button>
     </div>
   )

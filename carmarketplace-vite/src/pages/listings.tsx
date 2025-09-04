@@ -4,6 +4,7 @@ import CarCard from '../components/CarCard';
 import type { ListingResponse } from '../models/ListingResponse';
 import type { Car } from '../models/Car'
 import PageNavigator from '../components/PageNavigator';
+import TopNavigator from '../components/TopNavigator';
 import FilterSideBar from '../components/FilterSideBar';
 import { useSearchParams } from 'react-router-dom';
 
@@ -62,12 +63,12 @@ function Listings() {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex pt-5">
         <div>
           <FilterSideBar/>
         </div>
         <div className="flex-1 p-4">
-          <PageNavigator
+          <TopNavigator
             page={data?.page ?? 1}
             pageSize={data?.pageSize ?? 30}
             total={data?.totalItems ?? 0}
@@ -77,6 +78,14 @@ function Listings() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
             {Array.isArray(data?.data) &&
               data.data.map((car: Car) => <CarCard key={car.id} car={car} />)}
+          </div>
+          <div className="pt-5">
+          <PageNavigator
+            page={data?.page ?? 1}
+            pageSize={data?.pageSize ?? 30}
+            total={data?.totalItems ?? 0}
+            totalPages={data?.totalPages ?? 1}
+          />
           </div>
         </div>
       </div>
