@@ -66,7 +66,7 @@ export default function CarCard({ car }: CarCardProps) {
 
       <div className="p-4">
         <h2 className="text-lg font-semibold">{car.title}</h2>
-        <p className="text-gray-900 font-medium">${car.price.toLocaleString()}</p>
+        <p className="text-gray-300 font-medium">${car.price.toLocaleString()}</p>
         <p className="text-sm text-gray-500">{car.kilometers.toLocaleString()} km • {car.transmission}</p>
       </div>
     </div>
