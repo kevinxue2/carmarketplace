@@ -88,20 +88,29 @@ export default function FilterSideBar() {
           </ul>
         </SidebarContext.Provider>
 
-        {expanded && <button
-          onClick={handleChanges}
-          className="mt-4 w-full rounded-xl bg-blue-600 px-4 py-2 text-white font-semibold shadow hover:bg-blue-700 transition"
-        >
-          Apply
-        </button>}
-        <div className="flex justify-between items-center w-16">
-          <button
-            onClick={() => setExpanded((curr) => !curr)}
-            className="rounded-lg"
-          >
-            {expanded ? <ChevronFirst /> : <ChevronLast />}
-          </button>
-        </div>
+        {expanded && (
+            <div className="px-3 pb-4 pt-2">
+              <button
+                onClick={handleChanges}
+                className="w-full rounded-xl bg-blue-600 px-4 py-3 text-white font-semibold shadow hover:bg-blue-700 transition"
+              >
+                Apply Filters
+              </button>
+            </div>
+          )}
+        <div className="p-1 border-t border-gray-700">
+            <button
+              onClick={() => setExpanded((curr) => !curr)}
+              className="w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-800 transition-colors text-white"
+              title={expanded ? "Collapse sidebar" : "Expand sidebar"}
+            >
+              {expanded ? (
+                <ChevronFirst className="w-5 h-5" />
+              ) : (
+                <ChevronLast className="w-5 h-5" />
+              )}
+            </button>
+          </div>
       </nav>
     </aside>
   )
