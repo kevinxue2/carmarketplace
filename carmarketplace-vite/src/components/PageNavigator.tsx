@@ -1,5 +1,4 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useState } from 'react'
 
 type PageNavigatorProps = {
   page: number
@@ -49,15 +48,10 @@ const getPageNumbers = (currentPage: number, totalPages: number): string[] => {
 
 export default function PageNavigator({
   page,
-  pageSize,
-  total,
   totalPages,
 }: PageNavigatorProps) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const currentSort = searchParams.get('sort') || 'created_at_desc';
 
   const goToNextPage = () => {
       const newParams = new URLSearchParams(searchParams.toString());
@@ -77,7 +71,7 @@ export default function PageNavigator({
     params.set('page', String(newPage));
     navigate(`?${params.toString()}`);
   };
-  
+
   return (
     <div className="flex items-center justify-center gap-1">
       {/* Previous Button */}
